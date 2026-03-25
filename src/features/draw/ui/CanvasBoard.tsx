@@ -11,8 +11,8 @@ export function CanvasBoard() {
   const { startDrawing, drawMove, stopDrawing } = useDrawing(canvasRef, activeTool, getCoordinates);
 
   const cursor = activeTool === "eraser"
-    ? `url(${eraser}) 0 32, auto`
-    : `url(${paintBrush}) 0 32, auto`;
+    ? `url(${eraser}) 0 32, crosshair`
+    : `url(${paintBrush}) 0 32, crosshair`;
 
   return (
     <canvas

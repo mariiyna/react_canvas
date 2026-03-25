@@ -7,13 +7,16 @@ export function Toolbar() {
 
   return (
     <div className='flex justify-center gap-5 py-3'>
-      <Button onClick={() => dispatch(setActiveTool("brush"))} text="Кисть" />
+      <Button
+        onClick={() => dispatch(setActiveTool("brush"))}>
+        Кисть
+      </Button>
       <Button
         onClick={() => dispatch(setActiveTool("eraser"))}
-        text="Ластик"
         variant="secondary"
-      />
-
+      >
+        Ластик
+      </Button>
       {/* <Button
         onClick={() => dispatch(clear("eraser"))}
         text="Очистить"
