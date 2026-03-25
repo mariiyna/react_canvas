@@ -1,13 +1,14 @@
 import { CanvasBoard, Toolbar } from "@/features/draw";
+import {Header} from "@/widgets/Header.tsx";
 
 export const DrawPage = () => {
   return (
-    <>
-      <h1 style={{ textAlign: "center", marginBottom: "20px" }}>
-        Рисование на холсте
-      </h1>
-      <Toolbar />
-      <CanvasBoard />
-    </>
+    <div className='px-2'>
+      <Header/>
+      <main>
+        <Toolbar />
+        <CanvasBoard />
+      </main>
+    </div>
   )
 };

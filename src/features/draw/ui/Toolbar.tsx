@@ -1,20 +1,12 @@
 import { useDispatch } from "react-redux";
 import { setActiveTool } from "@/features/draw/model/toolSlice";
 import { Button } from "@/widgets";
-import styled from "styled-components";
-
-const ToolbarContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  padding: 1rem;
-`;
 
 export function Toolbar() {
   const dispatch = useDispatch();
 
   return (
-    <ToolbarContainer>
+    <div className='flex justify-center gap-5 py-3'>
       <Button onClick={() => dispatch(setActiveTool("brush"))} text="Кисть" />
       <Button
         onClick={() => dispatch(setActiveTool("eraser"))}
@@ -23,9 +15,9 @@ export function Toolbar() {
       />
 
       {/* <Button
-        onClick={() => dispatch(setActiveTool("eraser"))}
+        onClick={() => dispatch(clear("eraser"))}
         text="Очистить"
       /> */}
-    </ToolbarContainer>
+    </div>
   );
 }

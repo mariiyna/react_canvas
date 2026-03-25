@@ -1,26 +1,24 @@
 import { useSelector } from "react-redux";
 import { type RootState } from "@/app/store";
-import styled from "styled-components";
 import {useCanvas} from "@/features/draw/model/useCanvas.ts";
 import {useDrawing} from "@/features/draw/model/useDrawing.ts";
-
-const СanvasWrapper = styled.canvas`
-  cursor: crosshair;
-  width: 100%;
-  height: 100%;
-  min-height: 75vh;
-  background-color: #fff;
-  border-radius: 20px;
-`;
+import eraser from "@/shared/assets/icons/eraser.png";
+import paintBrush from "@/shared/assets/icons/paint-brush.png";
 
 export function CanvasBoard() {
   const { canvasRef, getCoordinates } = useCanvas();
   const { activeTool } = useSelector((state: RootState) => state.tool);
   const { startDrawing, drawMove, stopDrawing } = useDrawing(canvasRef, activeTool, getCoordinates);
 
+  const cursor = activeTool === "eraser"
+    ? `url(${eraser}) 0 32, auto`
+    : `url(${paintBrush}) 0 32, auto`;
+
   return (
-    <СanvasWrapper
+    <canvas
       ref={canvasRef}
+      className='w-full h-full bg-white rounded-xl min-h-[75vh]'
+      style={{ cursor }}
       onMouseDown={startDrawing}
       onMouseMove={drawMove}
       onMouseUp={stopDrawing}
