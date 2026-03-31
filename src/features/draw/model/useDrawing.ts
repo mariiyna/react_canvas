@@ -1,11 +1,12 @@
 import type {Tool} from "@/features/draw/model/types.ts";
 import React, {useRef} from "react";
+import {BASE_COLOR} from "@/features/draw/model/CONSTS.ts";
 
 export const useDrawing = (
   canvasRef: React.RefObject<HTMLCanvasElement | null>,
   activeTool: Tool,
   getCoordinates: (e: React.MouseEvent | React.TouchEvent) => { x: number; y: number },
-  toolColor: string
+  toolColor: string = BASE_COLOR
 ) => {
   const drawing = useRef(false);
 

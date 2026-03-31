@@ -7,6 +7,7 @@ import paintBrush from "@/shared/assets/icons/paint-brush.png";
 import { MdDelete } from "react-icons/md";
 import {BASE_COLOR, MAX_WIDTH, MIN_WIDTH} from "@/features/draw/model/CONSTS.ts";
 import React, {useState} from "react";
+import {ManagePanel} from "@/features/manageDraw/ui/ManagePanel.tsx";
 
 export function CanvasBoard() {
   const [toolWidth, setToolWidth] = useState(MIN_WIDTH)
@@ -34,7 +35,7 @@ export function CanvasBoard() {
         style={{boxShadow: '15px 10px 30px #000', backgroundColor: '#16202A'}}
         className="p-5 border-2 border-gray-700 rounded-xl mt-2"
       >
-        <div className="mb-3 px-2 flex justify-between">
+        <div className="mb-3 px-2 flex justify-center flex-wrap gap-8">
           <div className='flex items-center gap-3'>
             <p>Толщина</p>
             <div>
@@ -47,7 +48,6 @@ export function CanvasBoard() {
                 onChange={handleWidthChange}
               />
             </div>
-            <p>{toolWidth}</p>
           </div>
           <div className="flex gap-15">
             <div className='flex items-center gap-3'>
@@ -62,7 +62,7 @@ export function CanvasBoard() {
         </div>
         <canvas
           ref={canvasRef}
-          className='w-full h-full bg-white rounded-xl min-h-[65vh]'
+          className='w-full h-full bg-white rounded-xl min-h-[65vh] mb-4'
           style={{ cursor }}
           onMouseDown={startDrawing}
           onMouseMove={drawMove}
@@ -73,6 +73,7 @@ export function CanvasBoard() {
           onTouchEnd={stopDrawing}
           onTouchCancel={stopDrawing}
         />
+        <ManagePanel canvasRef={canvasRef}/>
       </div>
     </>
   );

@@ -1,6 +1,7 @@
 import React, {useEffect, useRef} from "react";
+import {MIN_WIDTH} from "@/features/draw/model/CONSTS.ts";
 
-export const useCanvas = (toolWidth: number) => {
+export const useCanvas = (toolWidth: number = MIN_WIDTH) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -13,11 +14,13 @@ export const useCanvas = (toolWidth: number) => {
 
     const canvasContext = canvas.getContext("2d");
     if (!canvasContext) {
-      return;
+      return
     }
 
-    canvasContext.lineCap = "round";
+    canvasContext.lineCap = "round"
     canvasContext.lineWidth = toolWidth;
+    canvasContext.fillStyle = '#fff'
+    canvasContext.fillRect(0, 0, canvas.width, canvas.height);
   }, []);
 
   useEffect(() => {
@@ -31,7 +34,12 @@ export const useCanvas = (toolWidth: number) => {
   }, [toolWidth])
 
   const clearCanvas = () => {
-
+    const canvas = canvasRef.current;
+    const canvasContext = canvas?.getContext("2d");
+    if (!canvas || !canvasContext) {
+      return;
+    }
+    canvasContext.clearRect(0, 0, canvas.width, canvas.height)
   }
 
   const getCoordinates = (event: React.MouseEvent | React.TouchEvent) => {
