@@ -17,10 +17,6 @@ export function Toolbar() {
       >
         Ластик
       </Button>
-      {/* <Button
-        onClick={() => dispatch(clear("eraser"))}
-        text="Очистить"
-      /> */}
     </div>
   );
 }
