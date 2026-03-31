@@ -4,7 +4,8 @@ import React, {useRef} from "react";
 export const useDrawing = (
   canvasRef: React.RefObject<HTMLCanvasElement | null>,
   activeTool: Tool,
-  getCoordinates: (e: React.MouseEvent | React.TouchEvent) => { x: number; y: number }
+  getCoordinates: (e: React.MouseEvent | React.TouchEvent) => { x: number; y: number },
+  toolColor: string
 ) => {
   const drawing = useRef(false);
 
@@ -25,7 +26,7 @@ export const useDrawing = (
       activeTool === "eraser" ? "destination-out" : "source-over";
 
     if (activeTool !== "eraser") {
-      canvasContext.strokeStyle = "#000";
+      canvasContext.strokeStyle = toolColor;
     }
 
     if (!isMoving) {

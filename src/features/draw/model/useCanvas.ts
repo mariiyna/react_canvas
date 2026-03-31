@@ -1,6 +1,6 @@
 import React, {useEffect, useRef} from "react";
 
-export const useCanvas = () => {
+export const useCanvas = (toolWidth: number) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -17,8 +17,22 @@ export const useCanvas = () => {
     }
 
     canvasContext.lineCap = "round";
-    canvasContext.lineWidth = 3;
+    canvasContext.lineWidth = toolWidth;
   }, []);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const canvasContext = canvas?.getContext("2d");
+
+    if (!canvas || !canvasContext) {
+      return;
+    }
+    canvasContext.lineWidth = toolWidth;
+  }, [toolWidth])
+
+  const clearCanvas = () => {
+
+  }
 
   const getCoordinates = (event: React.MouseEvent | React.TouchEvent) => {
     const canvas = canvasRef.current;
@@ -43,5 +57,5 @@ export const useCanvas = () => {
     };
   };
 
-  return { canvasRef, getCoordinates };
+  return { canvasRef, getCoordinates, clearCanvas };
 }
