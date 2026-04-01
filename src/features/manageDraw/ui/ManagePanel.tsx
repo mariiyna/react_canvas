@@ -4,6 +4,8 @@ import { MdOutlineSaveAlt } from "react-icons/md";
 import { FaFileDownload } from "react-icons/fa";
 import {Button} from "@/widgets";
 import React, {useRef} from "react";
+import {useDispatch} from "react-redux";
+import {redoStep, undoStep} from "@/features/manageDraw/model/historySlice.ts";
 
 type ManagePanelProps = {
   canvasRef: React.RefObject<HTMLCanvasElement | null>;
@@ -11,6 +13,8 @@ type ManagePanelProps = {
 
 export function ManagePanel({canvasRef}: ManagePanelProps) {
   const fileInputRef = useRef<HTMLInputElement | null>(null)
+
+  const dispatch = useDispatch()
 
   const handleDownload = () => {
     const canvas = canvasRef?.current
@@ -34,7 +38,7 @@ export function ManagePanel({canvasRef}: ManagePanelProps) {
     }
 
     const canvas = canvasRef.current
-    const canvasContext = canvas.getContext("2d")
+    const canvasContext = canvas.getContext('2d')
     if (!canvasContext) {
       return;
     }
@@ -63,9 +67,21 @@ export function ManagePanel({canvasRef}: ManagePanelProps) {
 
   return (
     <div className='flex justify-between flex-wrap'>
-      <div className="flex items-center gap-5 cursor-pointer">
-        <FaLongArrowAltLeft size={40}/>
-        <FaLongArrowAltRight size={40}/>
+      <div className="flex items-center gap-5">
+        <Button
+          className='cursor-pointer p-1!'
+          variant='secondary'
+          onClick={() => dispatch(undoStep())}
+        >
+          <FaLongArrowAltLeft size={40}/>
+        </Button>
+        <Button
+          className='cursor-pointer p-1!'
+          variant='secondary'
+          onClick={() => dispatch(redoStep())}
+        >
+          <FaLongArrowAltRight size={40}/>
+        </Button>
       </div>
       <div className='flex items-center gap-3'>
         <input

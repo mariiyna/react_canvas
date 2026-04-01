@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import { type RootState } from "@/app/store";
 import {useCanvas} from "@/features/draw/model/useCanvas.ts";
 import {useDrawing} from "@/features/draw/model/useDrawing.ts";
@@ -6,15 +6,19 @@ import eraser from "@/shared/assets/icons/eraser.png";
 import paintBrush from "@/shared/assets/icons/paint-brush.png";
 import { MdDelete } from "react-icons/md";
 import {BASE_COLOR, MAX_WIDTH, MIN_WIDTH} from "@/features/draw/model/CONSTS.ts";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {ManagePanel} from "@/features/manageDraw/ui/ManagePanel.tsx";
+import {redoStep, undoStep} from "@/features/manageDraw/model/historySlice.ts";
 
 export function CanvasBoard() {
   const [toolWidth, setToolWidth] = useState(MIN_WIDTH)
   const [toolColor, setToolColor] = useState(BASE_COLOR)
 
-  const { canvasRef, getCoordinates, clearCanvas } = useCanvas(toolWidth);
   const { activeTool } = useSelector((state: RootState) => state.tool);
+  const { history, currentIndex } = useSelector((state: RootState) => state.history);
+  const dispatch = useDispatch()
+
+  const { canvasRef, getCoordinates, clearCanvas } = useCanvas(toolWidth);
   const { startDrawing, drawMove, stopDrawing } = useDrawing(canvasRef, activeTool, getCoordinates, toolColor);
 
   const cursor = activeTool === "eraser"
@@ -28,6 +32,42 @@ export function CanvasBoard() {
   const handleColorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setToolColor(event.target.value)
   }
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.key === 'z') {
+        if (e.shiftKey) {
+          dispatch(redoStep())
+        } else {
+          dispatch(undoStep())
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [dispatch]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const canvasContext = canvas?.getContext('2d')
+
+    if (!canvas || !canvasContext) {
+      return;
+    }
+    if (currentIndex < 0) {
+      return;
+    }
+
+    const img = new Image()
+    img.src = history[currentIndex]
+
+    img.onload = () => {
+      canvasContext.globalCompositeOperation = 'source-over'
+      canvasContext.clearRect(0, 0, canvas.width, canvas.height)
+      canvasContext.drawImage(img, 0, 0)
+    };
+  }, [currentIndex])
 
   return (
     <>

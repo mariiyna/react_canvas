@@ -1,6 +1,8 @@
 import type {Tool} from "@/features/draw/model/types.ts";
 import React, {useRef} from "react";
 import {BASE_COLOR} from "@/features/draw/model/CONSTS.ts";
+import {useDispatch} from "react-redux";
+import {pushState} from "@/features/manageDraw/model/historySlice.ts";
 
 export const useDrawing = (
   canvasRef: React.RefObject<HTMLCanvasElement | null>,
@@ -9,6 +11,7 @@ export const useDrawing = (
   toolColor: string = BASE_COLOR
 ) => {
   const drawing = useRef(false);
+  const dispatch = useDispatch()
 
   const handleDraw = (
     event: React.MouseEvent | React.TouchEvent,
@@ -17,6 +20,7 @@ export const useDrawing = (
 
     const canvas = canvasRef.current;
     const canvasContext = canvas?.getContext("2d");
+
     if (!canvasContext || !canvas) {
       return;
     }
@@ -53,6 +57,12 @@ export const useDrawing = (
   };
 
   const stopDrawing = () => {
+    const canvas = canvasRef.current
+
+    if (canvas) {
+      const data = canvas.toDataURL()
+      dispatch(pushState(data))
+    }
     drawing.current = false;
   };
 

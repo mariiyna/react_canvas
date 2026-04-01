@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import toolReducer from "@/features/draw/model/toolSlice";
+import historySlice from "@/features/manageDraw/model/historySlice.ts";
 
 export const store = configureStore({
   reducer: {
     tool: toolReducer,
+    history: historySlice
   },
 });
 
