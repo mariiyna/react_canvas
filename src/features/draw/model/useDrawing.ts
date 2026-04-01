@@ -1,25 +1,27 @@
-import type {Tool} from "@/features/draw/model/types.ts";
-import React, {useRef} from "react";
-import {BASE_COLOR} from "@/features/draw/model/CONSTS.ts";
-import {useDispatch} from "react-redux";
-import {pushState} from "@/features/manageDraw/model/historySlice.ts";
+import type { Tool } from '@/features/draw/model/types.ts';
+import React, { useRef } from 'react';
+import { BASE_COLOR } from '@/features/draw/model/CONSTS.ts';
+import { useDispatch } from 'react-redux';
+import { pushState } from '@/features/manageDraw/model/historySlice.ts';
 
 export const useDrawing = (
   canvasRef: React.RefObject<HTMLCanvasElement | null>,
   activeTool: Tool,
-  getCoordinates: (e: React.MouseEvent | React.TouchEvent) => { x: number; y: number },
+  getCoordinates: (e: React.MouseEvent | React.TouchEvent) => {
+    x: number;
+    y: number;
+  },
   toolColor: string = BASE_COLOR
 ) => {
   const drawing = useRef(false);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const handleDraw = (
     event: React.MouseEvent | React.TouchEvent,
-    isMoving: boolean,
+    isMoving: boolean
   ) => {
-
     const canvas = canvasRef.current;
-    const canvasContext = canvas?.getContext("2d");
+    const canvasContext = canvas?.getContext('2d');
 
     if (!canvasContext || !canvas) {
       return;
@@ -28,9 +30,9 @@ export const useDrawing = (
     const { x, y } = getCoordinates(event);
 
     canvasContext.globalCompositeOperation =
-      activeTool === "eraser" ? "destination-out" : "source-over";
+      activeTool === 'eraser' ? 'destination-out' : 'source-over';
 
-    if (activeTool !== "eraser") {
+    if (activeTool !== 'eraser') {
       canvasContext.strokeStyle = toolColor;
     }
 
@@ -57,14 +59,14 @@ export const useDrawing = (
   };
 
   const stopDrawing = () => {
-    const canvas = canvasRef.current
+    const canvas = canvasRef.current;
 
     if (canvas) {
-      const data = canvas.toDataURL()
-      dispatch(pushState(data))
+      const data = canvas.toDataURL();
+      dispatch(pushState(data));
     }
     drawing.current = false;
   };
 
   return { startDrawing, drawMove, stopDrawing };
-}
+};

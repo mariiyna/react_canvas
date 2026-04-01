@@ -1,12 +1,12 @@
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { Tool, ToolState } from "./types";
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import type { Tool, ToolState } from './types';
 
 const initialState: ToolState = {
-  activeTool: "brush",
+  activeTool: 'brush',
 };
 
 const toolSlice = createSlice({
-  name: "tool",
+  name: 'tool',
   initialState,
   reducers: {
     setActiveTool: (state, action: PayloadAction<Tool>) => {

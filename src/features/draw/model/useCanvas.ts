@@ -1,11 +1,11 @@
-import React, {useEffect, useRef} from "react";
-import {MIN_WIDTH} from "@/features/draw/model/CONSTS.ts";
-import {useDispatch} from "react-redux";
-import {pushState} from "@/features/manageDraw/model/historySlice.ts";
+import React, { useEffect, useRef } from 'react';
+import { MIN_WIDTH } from '@/features/draw/model/CONSTS.ts';
+import { useDispatch } from 'react-redux';
+import { pushState } from '@/features/manageDraw/model/historySlice.ts';
 
 export const useCanvas = (toolWidth: number = MIN_WIDTH) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -15,40 +15,40 @@ export const useCanvas = (toolWidth: number = MIN_WIDTH) => {
     canvas.width = canvas.clientWidth;
     canvas.height = canvas.clientHeight;
 
-    const canvasContext = canvas.getContext("2d");
+    const canvasContext = canvas.getContext('2d');
     if (!canvasContext) {
-      return
+      return;
     }
 
-    canvasContext.lineCap = 'round'
+    canvasContext.lineCap = 'round';
     canvasContext.lineWidth = toolWidth;
-    canvasContext.fillStyle = '#fff'
-    canvasContext.fillRect(0, 0, canvas.width, canvas.height)
+    canvasContext.fillStyle = '#fff';
+    canvasContext.fillRect(0, 0, canvas.width, canvas.height);
 
-    const data = canvas.toDataURL()
-    dispatch(pushState(data))
-  }, []);
+    const data = canvas.toDataURL();
+    dispatch(pushState(data));
+  }, [dispatch, toolWidth]);
 
   useEffect(() => {
-    const canvas = canvasRef.current
-    const canvasContext = canvas?.getContext('2d')
+    const canvas = canvasRef.current;
+    const canvasContext = canvas?.getContext('2d');
 
     if (!canvas || !canvasContext) {
       return;
     }
-    canvasContext.lineWidth = toolWidth
-  }, [toolWidth])
+    canvasContext.lineWidth = toolWidth;
+  }, [toolWidth]);
 
   const clearCanvas = () => {
-    const canvas = canvasRef.current
-    const canvasContext = canvas?.getContext('2d')
+    const canvas = canvasRef.current;
+    const canvasContext = canvas?.getContext('2d');
     if (!canvas || !canvasContext) {
       return;
     }
-    canvasContext.clearRect(0, 0, canvas.width, canvas.height)
-    const data = canvas.toDataURL()
-    dispatch(pushState(data))
-  }
+    canvasContext.clearRect(0, 0, canvas.width, canvas.height);
+    const data = canvas.toDataURL();
+    dispatch(pushState(data));
+  };
 
   const getCoordinates = (event: React.MouseEvent | React.TouchEvent) => {
     const canvas = canvasRef.current;
@@ -74,4 +74,4 @@ export const useCanvas = (toolWidth: number = MIN_WIDTH) => {
   };
 
   return { canvasRef, getCoordinates, clearCanvas };
-}
+};
