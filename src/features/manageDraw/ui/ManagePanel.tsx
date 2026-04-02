@@ -1,6 +1,6 @@
 import { FaLongArrowAltLeft } from 'react-icons/fa';
 import { FaLongArrowAltRight } from 'react-icons/fa';
-import { MdOutlineSaveAlt } from 'react-icons/md';
+import { FaRegFileImage } from "react-icons/fa";
 import { FaFileDownload } from 'react-icons/fa';
 import { Button } from '@/widgets';
 import React, { useRef } from 'react';
@@ -108,7 +108,7 @@ export function ManagePanel({ canvasRef }: ManagePanelProps) {
           className="flex items-center gap-1"
           onClick={() => fileInputRef.current?.click()}
         >
-          <MdOutlineSaveAlt />
+          <FaRegFileImage />
           Загрузить
         </Button>
         <Button
