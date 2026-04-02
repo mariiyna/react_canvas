@@ -50,7 +50,10 @@ export function CanvasBoard() {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.ctrlKey && e.key.toLowerCase() === 'z') {
+      if (
+        e.ctrlKey &&
+        (e.key.toLowerCase() === 'z' || e.key.toLowerCase() === 'я')
+      ) {
         if (e.shiftKey) {
           dispatch(redoStep());
         } else {
