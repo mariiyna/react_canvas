@@ -12,28 +12,34 @@ export const useCanvas = (toolWidth: number = MIN_WIDTH) => {
     if (!canvas) {
       return;
     }
-    canvas.width = canvas.clientWidth;
-    canvas.height = canvas.clientHeight;
 
-    const canvasContext = canvas.getContext('2d');
-    if (!canvasContext) {
-      return;
-    }
+    const resizeCanvas = () => {
+      const canvasContext = canvas.getContext('2d');
+      if (!canvasContext) {
+        return;
+      }
 
-    canvasContext.lineCap = 'round';
-    canvasContext.lineWidth = toolWidth;
-    canvasContext.fillStyle = '#fff';
-    canvasContext.fillRect(0, 0, canvas.width, canvas.height);
+      canvas.width = canvas.clientWidth;
+      canvas.height = canvas.clientHeight;
 
-    const data = canvas.toDataURL();
-    dispatch(pushState(data));
-  }, [dispatch, toolWidth]);
+      canvasContext.fillStyle = '#fff';
+      canvasContext.fillRect(0, 0, canvas.width, canvas.height);
+      canvasContext.lineCap = 'round';
+      canvasContext.lineWidth = toolWidth;
+
+      const data = canvas.toDataURL();
+      dispatch(pushState(data));
+    };
+    resizeCanvas();
+
+    window.addEventListener('resize', resizeCanvas);
+    return () => window.removeEventListener('resize', resizeCanvas);
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     const canvasContext = canvas?.getContext('2d');
-
-    if (!canvas || !canvasContext) {
+    if (!canvasContext) {
       return;
     }
     canvasContext.lineWidth = toolWidth;
